@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -15,19 +14,12 @@ import (
 )
 
 func main() {
-	openSsh := flag.Bool("ssh", false, "enter in ssh")
-	flag.Parse()
-
-	var command string
 	var instanceName string
+	var command string
 
-	if len(os.Args) >= 2 {
-		command = os.Args[1]
-		instanceName = os.Args[2]
-	}
 	if len(os.Args) >= 3 {
+		instanceName = os.Args[1]
 		command = os.Args[2]
-		instanceName = os.Args[2]
 	}
 
 	fmt.Printf("instance=%s command=%s\n", instanceName, command)
@@ -68,7 +60,7 @@ func main() {
 					fmt.Printf("error: %s", err.Error())
 				}
 			}
-			if *openSsh && instanceName == *instance.KeyName {
+			if instanceName == *instance.KeyName && command == "ssh" {
 				fmt.Printf("ssh %s\n", instanceName)
 
 				home, _ := os.UserHomeDir()
